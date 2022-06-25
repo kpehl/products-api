@@ -225,9 +225,56 @@
                     }
                 }
             ],            
-            "get":{},
-            "put":{},
-            "delete":{}
+            "get":{
+                "responses": {
+                    "200": {
+                      "description": "OK",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Review"
+                          }
+                        }
+                      }
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                  }                
+            },
+            "put":{
+                "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Review"
+                        }
+                      }
+                    },
+                    "required": true
+                  },
+                  "responses": {
+                    "204": {
+                      "description": "Updated successfully"
+                    },
+                    "400": {
+                      "description": "Invalid input"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                  }                
+            },
+            "delete":{
+                "responses": {
+                    "204": {
+                      "description": "Deleted successfully"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                  }                
+            }
         }
     },
     "components": {
