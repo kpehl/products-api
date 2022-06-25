@@ -3,6 +3,10 @@ const routes = require('./controllers');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('./swagger.json');
 
+const swaggerOptions = {
+  defaultModelsExpandDepth: -1
+};
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -13,7 +17,7 @@ app.use(routes);
 
 app.use(
   '/docs',
-  swaggerUi.serveFiles(swaggerDoc),
+  swaggerUi.serveFiles(swaggerDoc, { swaggerOptions }),
   swaggerUi.setup(swaggerDoc)
 );
 
