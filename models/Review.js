@@ -6,7 +6,7 @@ class Review {
     this.offset = 10;
   }
 
-  getAll({ product_id, sort }) {
+  getAll({ product_id, sort, page }) {
     let orderBy = 'ORDER BY ';
 
     let offset = page
