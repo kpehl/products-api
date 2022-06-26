@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Product, Review } = require('../../models');
+const { Product, Review } = require('../../../models');
 
 router.get('/', async (req, res) => {
   try {
