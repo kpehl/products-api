@@ -2,10 +2,36 @@ const router = require('express').Router();
 const { Product, Review } = require('../../../models');
 
 router.get('/', async (req, res) => {
-  try {
-    const { rows } = await Product.getAll(req.query);
 
-    res.status(200).json(rows);
+  const page = parseInt(req.query.page) || 1;
+
+  const url = new URL(req.originalUrl, `${req.protocol}://${req.get('host')}`);
+  let link = '';
+
+  try {
+
+    const { rows } = await Product.getAll({
+      ...req.query,
+      page
+    });
+
+    if (rows.length > 0 && page > 1) {
+      url.searchParams.set('page', page - 1);
+      link += `<${url.href}>; rel="prev"`;
+    }
+  
+    if (rows.length > Product.offset) {
+      if (link != '') {
+        link +=', ';
+      }
+  
+      rows.pop();
+  
+      url.searchParams.set('page', page + 1);
+      link += `<${url.href}>; rel="next"`;
+    }
+  
+    res.set('Link', link).status(200).json(rows);
   }
   catch (err) {
     console.error(err);
