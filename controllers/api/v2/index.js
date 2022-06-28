@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
-const redis = require('redis');
-const client = redis.createClient();
+const redis = require('../../../config/redis')
 
 const categoryRoutes = require('./categories');
 const productRoutes = require('./products');
@@ -13,8 +12,7 @@ router.use(async (req, res, next) => {
         res.set('Cache-Control', 'private, max-age=300');
 
         // server-side caching
-        await client.connect();
-        const cache = await client.get(req.originalUrl);
+        const cache = await redis.get(req.originalUrl);
         if (cache) {
             res.status(200).json(JSON.parse(cache));
             return;

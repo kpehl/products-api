@@ -1,20 +1,20 @@
 require('dotenv').config();
 
-// const { promisify } = require('util');
 const redis = require('redis');
 
-const client = redis.createClient({
-    legacyMode: true
+let client;
+
+(async function () {
+    client = redis.createClient();
+    await client.connect();
+  })();
+
+client.on('connect', () => {
+    console.log('Connected to Redis Server');
 });
 
-client.connect();
-client.on('error', (err) => console.log('Redis Client Error', err));
+client.on('error', (err) => {
+    console.log('Redis Client Error', err)
+});
 
-// module.exports = {
-//     connect: promisify(client.connect).bind(client),
-//     get: promisify(client.get).bind(client),
-//     set: promisify(client.set).bind(client),
-//     quit: promisify(client.quit).bind(client)
-//   };
-
-module.exports = { client };
+module.exports = client;

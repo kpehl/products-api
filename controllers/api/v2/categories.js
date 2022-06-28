@@ -1,18 +1,13 @@
 const router = require('express').Router();
 const redis = require('../../../config/redis');
-// const redis = require('redis');
-// const client = redis.createClient();
 const { Category } = require('../../../models');
 
   router.get('/', async (req, res) => {
     try {
       const { rows } = await Category.getAll();
 
-      // await client.connect();
-      // console.log(req.originalUrl, JSON.stringify(rows))
+      console.log(req.originalUrl, JSON.stringify(rows))
       await redis.set(req.originalUrl, JSON.stringify(rows), {EX: 3600});
-      // let cachedValue = await client.get(req.originalUrl);
-      // console.log('cached', cachedValue)
 
       res.status(200).json(rows);
     }
